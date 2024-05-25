@@ -1,0 +1,48 @@
+---
+- name: Install zsh and autojump packages
+  become: true  
+  ansible.builtin.package:
+    name:
+      - git
+      - wget
+      - curl
+      - zsh
+      - autojump
+    state: present
+    
+- name: Create .zshrc file
+  ansible.builtin.command: touch ~/.zshrc
+
+- name: Change default shell to zsh
+  become: true
+  ansible.builtin.shell: chsh -s $(which zsh) {{ ansible_env.USER }}
+
+- name: Include tasks for Ruby installation
+  ansible.builtin.include_tasks: ruby.yml
+
+- name: Create .antigen directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.antigen"
+    state: directory
+
+- name: Download antigen.zsh
+  ansible.builtin.get_url:
+    url: https://git.io/antigen
+    dest: "{{ ansible_env.HOME }}/.antigen/antigen.zsh"
+
+- name: Copy .antigen configuration file
+  ansible.builtin.template:
+    src: templates/antigen.config.j2
+    dest: "{{ ansible_env.HOME }}/.antigen/config"
+
+- name: Enable antigen by sourcing it in ~/.zshrc
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    prepend_newline: true 
+    marker: "# Antigen {mark} ---------------------------------"
+    block: |
+      # Load Antigen
+      source ~/.antigen/antigen.zsh
+
+      # Load Antigen configurations
+      source ~/.antigen/config

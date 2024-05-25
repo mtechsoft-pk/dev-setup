@@ -1,0 +1,45 @@
+---
+- name: Install ruby packages
+  vars:
+    debian_packages:
+      - ruby
+      - ruby-dev
+      - make
+      - build-essential
+    redhat_packages:
+      - ruby
+      - ruby-devel
+      - make
+      - automake
+      - gcc
+      - gcc-c++
+      - kernel-devel
+  block:
+    - name: Install packages for Debian
+      become: true
+      ansible.builtin.package:
+        name: "{{ debian_packages }}"
+        state: present
+      when: ansible_distribution == 'Debian'
+
+    - name: Install packages for RedHat
+      become: true
+      ansible.builtin.package:
+        name: "{{ redhat_packages }}"
+        state: present
+      when: ansible_distribution == 'RedHat'
+
+- name: Create .ruby directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.ruby"
+    state: directory
+
+- name: Setups necessary environment variables for Ruby
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    prepend_newline: true
+    marker: "# Ruby environment variables {mark} ------------------------"
+    block: |
+      export GEM_HOME="$HOME/.ruby"
+      export PATH="$GEM_HOME/bin:$PATH"
+  
