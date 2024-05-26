@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "ms-vscode-remote.remote-containers",
+    "ms-vscode-remote.remote-wsl",
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "esbenp.prettier-vscode",
+    "mikestead.dotenv",
+    "vscode-icons-team.vscode-icons",
+    "redhat.ansible",
+    "wholroyd.jinja",
+    "ms-azuretools.vscode-docker",
+    "shd101wyy.markdown-preview-enhanced",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker",
+    "mads-hartmann.bash-ide-vscode",
+    "foxundermoon.shell-format"
+  ]
+}

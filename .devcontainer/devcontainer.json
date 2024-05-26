@@ -1,0 +1,48 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+{
+  "name": "mtechsoft-dev-setup",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "runArgs": ["--privileged", "--name", "mtechsoft-dev-setup"],
+  "remoteEnv": {
+    "PROJECT_DIR": "${containerWorkspaceFolder}"
+  },
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": ".devcontainer/post-create.sh",
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "esbenp.prettier-vscode",
+        "mikestead.dotenv",
+        "vscode-icons-team.vscode-icons",
+        "redhat.ansible",
+        "wholroyd.jinja",
+        "ms-azuretools.vscode-docker",
+        "shd101wyy.markdown-preview-enhanced",
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker",
+        "mads-hartmann.bash-ide-vscode",
+        "foxundermoon.shell-format"
+      ]
+    }
+  },
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
+  "overrideCommand": false,
+  "mounts": [
+    "source=dind-var-lib-docker,target=/var/lib/docker,type=volume",
+    "source=mtechsoft-dev-setup-profile,target=/home/vscode,type=volume",
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "target=/home/vscode/.vscode-server,type=volume"
+  ]
+}
